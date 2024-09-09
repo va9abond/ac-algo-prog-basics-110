@@ -11,34 +11,28 @@ function inverse_side(side::HorizonSide)
 end
 
 
-function move_till_border!(robot::Robot, side::HorizonSide; putmarker::Bool=false)::Integer
+function move_till_border!(robot::Robot, side::HorizonSide)::Integer
     steps_till_border::Integer = 0
 
     while (!isborder(robot, side))
-        (putmarker == true) && (putmarker!(robot))
         HorizonSideRobots.move!(robot, side)
         steps_till_border += 1
     end
-
-    (putmarker == true) && (putmarker!(robot))
 
     return steps_till_border
 end
 
 
 # TODO [overload] ... move!(..., steps::Integer=1; ...)::Bool
-function move_steps!(robot::Robot, side::HorizonSide, steps::Integer; putmarker::Bool=false)::Bool
+function move_steps!(robot::Robot, side::HorizonSide, steps::Integer)::Bool
     while (steps > 0)
         if (!isborder(robot, side))
-            (putmarker == true) && (putmarker!(robot))
             HorizonSideRobots.move!(robot, side)
             steps -= 1
         else
             return false
         end
     end
-
-    (putmarker == true) && (putmarker!(robot))
 
     return true
 end
