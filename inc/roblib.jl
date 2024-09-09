@@ -44,8 +44,9 @@ function mark_line!(robot::Robot, side::HorizonSide)::Integer
 
     putmarker!(robot)
     while (!isborder(robot, side))
-        (move!(robot, side)) || (putmarker!(robot))
+        move!(robot, side)
         steps_in_side += 1
+        putmarker!(robot)
     end
 
     return steps_in_side
