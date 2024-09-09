@@ -1,4 +1,8 @@
 # TODO import HorizonSideRobots as HSR
+# TODO unify move[_...]! function interface (return path)
+
+# XXX putmarker! after or before move?
+
 using HorizonSideRobots
 
 
@@ -37,4 +41,18 @@ function move_steps!(robot::Robot, side::HorizonSide, steps::Integer; putmarker:
     (putmarker == true) && (putmarker!(robot))
 
     return true
+end
+
+
+# XXX what should this function return?
+function mark_line!(robot::Robot, side::HorizonSide)::Integer
+    steps_in_side::Integer = 0
+
+    putmarker!(robot)
+    while (!isborder(robot, side))
+        (move!(robot, side)) || (putmarker!(robot))
+        steps_in_side += 1
+    end
+
+    return steps_in_side
 end
