@@ -38,16 +38,15 @@ function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer
 end
 
 
-# XXX what should this function return?
-function mark_line!(robot::Robot, side::HorizonSide)::Integer
-    steps_in_side::Integer = 0
+function mark_direct!(robot::Robot, side::HorizonSide)::Integer
+    steps_in_direct::Integer = 0
 
     putmarker!(robot)
     while (!isborder(robot, side))
         move!(robot, side)
-        steps_in_side += 1
+        steps_in_direct += 1
         putmarker!(robot)
     end
 
-    return steps_in_side
+    return steps_in_direct
 end
