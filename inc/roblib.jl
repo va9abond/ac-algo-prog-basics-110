@@ -21,17 +21,17 @@ function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
 end
 
 
-function move_till_border!(robot::Robot, side::HorizonSide)::Integer
-    steps_till_border::Integer = 0
+# move to direction side untill stop_cond
+function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Vector{HorizonSide}
+    traveled_path::Vector{HorizonSide} = []
 
-    while (!isborder(robot, side))
+    while (!stop_cond(robot, side))
         HorizonSideRobots.move!(robot, side)
-        steps_till_border += 1
+        push!(traveled_path, side)
     end
 
-    return steps_till_border
+    return traveled_path
 end
-
 
 
 function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple{Bool, Vector{HorizonSide}}
