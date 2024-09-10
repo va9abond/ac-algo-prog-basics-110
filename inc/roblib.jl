@@ -8,7 +8,7 @@
 using HorizonSideRobots
 
 
-function inverse_side(side::HorizonSide)
+function inverse_side(side::HorizonSide)::HorizonSide
     return HorizonSide((Int(side)+2)%4)
 end
 
