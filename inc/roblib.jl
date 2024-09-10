@@ -13,6 +13,14 @@ function reverse_side(side::HorizonSide)::HorizonSide
 end
 
 
+function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
+    reversed_sides::Vector{HorizonSide} = []
+    foreach(side -> push!(reversed_sides, reverse_side(side)), path)
+
+    return reverse!(reversed_sides)
+end
+
+
 function move_till_border!(robot::Robot, side::HorizonSide)::Integer
     steps_till_border::Integer = 0
 
