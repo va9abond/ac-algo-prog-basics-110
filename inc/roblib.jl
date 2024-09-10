@@ -50,17 +50,19 @@ function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple
 end
 
 
-function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Bool
-    while (steps > 0)
+function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Tuple{Bool, Integer}
+    traveled_steps::Integer = 0
+
+    while (traveled_steps != steps)
         if (!isborder(robot, side))
             HorizonSideRobots.move!(robot, side)
-            steps -= 1
+            traveled_steps += 1
         else
-            return false
+            return (false, traveled_steps)
         end
     end
 
-    return true
+    return (true, steps)
 end
 
 
