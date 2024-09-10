@@ -23,42 +23,42 @@ end
 
 # move to direction side untill stop_cond
 function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Vector{HorizonSide}
-    traveled_path::Vector{HorizonSide} = []
+    traversed_path::Vector{HorizonSide} = []
 
     while (!stop_cond(robot, side))
         HorizonSideRobots.move!(robot, side)
-        push!(traveled_path, side)
+        push!(traversed_path, side)
     end
 
-    return traveled_path
+    return traversed_path
 end
 
 
 function HorizonSideRobots.move!(stop_cond::Function,
                                  robot::Robot, side::HorizonSide;
                                  pre_act::Function, post_act::Function)::Vector{HorizonSide}
-    traveled_path::Vector{HorizonSide} = []
+    traversed_path::Vector{HorizonSide} = []
 
     while (!stop_cond(robot, side))
         pre_act(robot)
         HorizonSideRobots.move!(robot, side)
-        push!(traveled_path, side)
+        push!(traversed_path, side)
         post_act(robot)
     end
 
-    return traveled_path
+    return traversed_path
 end
 
 
 function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple{Bool, Vector{HorizonSide}}
-    traveled_path::Vector{HorizonSide} = []
+    traversed_path::Vector{HorizonSide} = []
 
     for side in path
         if (!isborder(robot, side))
             move!(robot, side)
-            push!(traveled_path, side)
+            push!(traversed_path, side)
         else
-            return (false, traveled_path) # traveled_path != path
+            return (false, traversed_path) # traveled_path != path
         end
     end
 
@@ -67,14 +67,14 @@ end
 
 
 function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Tuple{Bool, Integer}
-    traveled_steps::Integer = 0
+    traversed_steps::Integer = 0
 
-    while (traveled_steps != steps)
+    while (traversed_steps != steps)
         if (!isborder(robot, side))
             HorizonSideRobots.move!(robot, side)
-            traveled_steps += 1
+            traversed_steps += 1
         else
-            return (false, traveled_steps)
+            return (false, traversed_steps)
         end
     end
 
