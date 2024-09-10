@@ -1,5 +1,6 @@
 # TODO import HorizonSideRobots as HSR
 # TODO unify move[_...]! function interface (return path)
+# TODO move with predicate
 
 # XXX putmarker! after or before move?
 
@@ -23,8 +24,7 @@ function move_till_border!(robot::Robot, side::HorizonSide)::Integer
 end
 
 
-# TODO [overload] ... move!(..., steps::Integer=1; ...)::Bool
-function move_steps!(robot::Robot, side::HorizonSide, steps::Integer)::Bool
+function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Bool
     while (steps > 0)
         if (!isborder(robot, side))
             HorizonSideRobots.move!(robot, side)
