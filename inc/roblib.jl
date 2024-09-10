@@ -38,15 +38,15 @@ function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer
 end
 
 
-function mark_direct!(robot::Robot, side::HorizonSide)::Integer
-    steps_in_direct::Integer = 0
+function mark_direction!(robot::Robot, side::HorizonSide)::Integer
+    steps_in_direction::Integer = 0
 
     putmarker!(robot)
     while (!isborder(robot, side))
         move!(robot, side)
-        steps_in_direct += 1
+        steps_in_direction += 1
         putmarker!(robot)
     end
 
-    return steps_in_direct
+    return steps_in_direction
 end
