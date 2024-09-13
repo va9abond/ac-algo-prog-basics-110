@@ -22,15 +22,15 @@ end
 
 
 # move to direction side untill stop_cond
-function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Vector{HorizonSide}
-    traversed_path::Vector{HorizonSide} = []
+function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Integer
+    steps_untill_stop_cond::Integer = 0
 
     while (!stop_cond(robot, side))
         HorizonSideRobots.move!(robot, side)
-        push!(traversed_path, side)
+        steps_untill_stop_cond += 1
     end
 
-    return traversed_path
+    return steps_untill_stop_cond
 end
 
 
