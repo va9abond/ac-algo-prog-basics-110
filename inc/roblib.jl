@@ -54,15 +54,12 @@ function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple
     traversed_path::Vector{HorizonSide} = []
 
     for side in path
-        if (!isborder(robot, side))
-            move!(robot, side)
-            push!(traversed_path, side)
-        else
-            return (false, traversed_path) # traveled_path != path
-        end
+        (isborder(robot, side)) && (return (false, traversed_path)) # traversed_path != path
+        move!(robot, side)
+        push!(traversed_path, side)
     end
 
-    return (true, path) # traveled_path == path
+    return (true, path) # traversed_path == path
 end
 
 
