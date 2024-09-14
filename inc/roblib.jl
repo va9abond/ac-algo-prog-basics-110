@@ -118,3 +118,18 @@ function mark_direction!(robot::Robot, side::HorizonSide)::Integer
 
     return steps_in_direction
 end
+
+
+# mark when parity == 1
+function mark_chess_direction!(robot::Robot, side::HorizonSide, init_parity::Int8)::Int8
+    parity::Int8 = init_parity
+
+    (parity == 1) && (putmarker!(robot))
+    while (!isborder(robot, side))
+        move!(robot, side)
+        parity = (parity+1) % 2
+        (parity == 1) && (putmarker!(robot))
+    end
+
+    return parity
+end
