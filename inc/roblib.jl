@@ -21,6 +21,14 @@ function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
 end
 
 
+function reverse_path(path::Vector{Tuple{HorizonSide, Integer}})::Vector{Tuple{HorizonSide, Integer}}
+    path_new::Vector{Tuple{HorizonSide,Integer}} = []
+    foreach((side,steps) -> push!((reverse_side(side), steps), path_new), path)
+
+    return reverse!(path_new)
+end
+
+
 # move to direction side untill stop_cond
 function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Integer
     steps_untill_stop_cond::Integer = 0
