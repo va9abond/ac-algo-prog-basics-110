@@ -71,6 +71,20 @@ function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple
 end
 
 
+function HorizonSideRobots.move!(robot::Robot, path::Vector{Tuple{HorizonSide, Integer}})::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
+    traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
+
+    for (side, steps) in path
+        success, steps_traversed = move!(robot, side, steps)
+        push!(traversed_path, (side, steps_traversed))
+
+        (!success) && (return (false, traversed_path))
+    end
+
+    return (true, traversed_path)
+end
+
+
 function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Tuple{Bool, Integer}
     traversed_steps::Integer = 0
 
