@@ -34,9 +34,9 @@ function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::Horizo
 end
 
 
-function HorizonSideRobots.move!(stop_cond::Function,
-                                 robot::Robot, side::HorizonSide;
-                                 pre_act::Function, post_act::Function)::Vector{HorizonSide}
+function move_with_act!(stop_cond::Function,
+                        robot::Robot, side::HorizonSide;
+                        pre_act::Function, post_act::Function)::Vector{HorizonSide}
     traversed_path::Vector{HorizonSide} = []
 
     while (!stop_cond(robot, side))
