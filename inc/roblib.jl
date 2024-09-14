@@ -66,13 +66,10 @@ end
 function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Tuple{Bool, Integer}
     traversed_steps::Integer = 0
 
-    while (traversed_steps != steps)
-        if (!isborder(robot, side))
-            HorizonSideRobots.move!(robot, side)
-            traversed_steps += 1
-        else
-            return (false, traversed_steps)
-        end
+    while (traversed_steps < steps)
+        (isborder(robot, side)) && (return (false, traversed_steps))
+        move!(robot, side)
+        traversed_steps += 1
     end
 
     return (true, steps)
