@@ -93,6 +93,19 @@ function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::T)::Tup
 end
 
 
+function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
+    path::Vector{Tuple{HorizonSide, Integer}} = []
+
+    for side in [side_v, side_h]
+        steps = move!(isborder, robot, side)
+        push!(path, (side, steps))
+    end
+
+    (!isborder(robot,side_v) || !isborder(robot,side_h)) && (return (false, path))
+    return (true, path)
+end
+
+
 function mark_direction!(robot::Robot, side::HorizonSide)::Integer
     steps_in_direction::Integer = 0
 
