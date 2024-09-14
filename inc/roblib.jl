@@ -25,8 +25,8 @@ end
 
 
 # move to direction side untill stop_cond
-function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::T where T <: Integer
-    steps_untill_stop_cond::T = 0
+function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Integer
+    steps_untill_stop_cond::Integer = 0
 
     while (!stop_cond(robot, side))
         HorizonSideRobots.move!(robot, side)
@@ -80,8 +80,8 @@ function HorizonSideRobots.move!(robot::Robot, path::Vector{Tuple{HorizonSide, T
 end
 
 
-function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::Integer)::Tuple{Bool, Integer}
-    traversed_steps::Integer = 0
+function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool, Integer} where T <: Integer
+    traversed_steps::T = 0
 
     while (traversed_steps < steps)
         (isborder(robot, side)) && (return (false, traversed_steps))
