@@ -1,9 +1,7 @@
 # TODO import HorizonSideRobots as HSR
-# TODO unify move[_...]! function interface (return path)
 # TODO move with predicate - stop_cond or while_cond
 # TODO move with predicate - make_before_move | make_after_move
 
-# XXX putmarker! after or before move?
 
 using HorizonSideRobots
 
@@ -27,8 +25,8 @@ end
 
 
 # move to direction side untill stop_cond
-function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Integer
-    steps_untill_stop_cond::Integer = 0
+function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::T where T <: Integer
+    steps_untill_stop_cond::T = 0
 
     while (!stop_cond(robot, side))
         HorizonSideRobots.move!(robot, side)
