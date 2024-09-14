@@ -21,11 +21,8 @@ function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
 end
 
 
-function reverse_path(path::Vector{Tuple{HorizonSide, Integer}})::Vector{Tuple{HorizonSide, Integer}}
-    path_new::Vector{Tuple{HorizonSide,Integer}} = []
-    foreach((side,steps) -> push!((reverse_side(side), steps), path_new), path)
-
-    return reverse!(path_new)
+function reverse_path(path::Vector{Tuple{HorizonSide, T}})::Vector{Tuple{HorizonSide, T}} where T <: Integer
+    return reverse!(map(p -> (reverse_side(p[1]), p[2]), path))
 end
 
 
@@ -71,8 +68,8 @@ function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple
 end
 
 
-function HorizonSideRobots.move!(robot::Robot, path::Vector{Tuple{HorizonSide, Integer}})::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
-    traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
+function HorizonSideRobots.move!(robot::Robot, path::Vector{Tuple{HorizonSide, T}})::Tuple{Bool, Vector{Tuple{HorizonSide, T}}} where T <: Integer
+    traversed_path::Vector{Tuple{HorizonSide, T}} = []
 
     for (side, steps) in path
         success, steps_traversed = move!(robot, side, steps)
