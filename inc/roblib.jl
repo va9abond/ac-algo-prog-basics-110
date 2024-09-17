@@ -120,7 +120,25 @@ function mark_direction!(robot::Robot, side::HorizonSide)::Integer
 end
 
 
+function mark_direction!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool, T} where T <: Integer
+    traversed_steps::T = 0
+
+    putmarker!(robot)
+    while (traversed_steps < steps)
+        (isborder(robot, side)) && (return (false, traversed_steps))
+
+        move!(robot, side)
+        traversed_steps += 1
+        putmarker!(robot)
+    end
+
+    return (true, steps)
+end
+
+
 # mark when parity == 1
+# function mark_chess_direction!(robot::Robot, side::HorizonSide, ::Val{0})::Int8
+# function mark_chess_direction!(robot::Robot, side::HorizonSide, ::Val{1})::Int8
 function mark_chess_direction!(robot::Robot, side::HorizonSide, init_parity::Int8)::Int8
     parity::Int8 = init_parity
 
