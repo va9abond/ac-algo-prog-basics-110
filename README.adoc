@@ -7,7 +7,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 
 == Task List
 
-. link:task/cross.jl[cross]
+. link:tasks/cross.jl[cross]
 +
 ДАНО:: Робот находится в произвольной клетке ограниченного прямоугольного
     поля без внутренних перегородок и маркеров.
@@ -16,21 +16,21 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 расставленных вплоть до внешней рамки (в клетке с роботом маркера
 нет).
 
-. link:task/mark_perimeter.jl[mark_perimeter]
+. link:tasks/mark_perimeter.jl[mark_perimeter]
 +
 ДАНО:: Робот - в произвольной клетке поля (без внутренних перегородок и маркеров)
 +
 РЕЗУЛЬТАТ:: Робот - в исходном положении, и все клетки по
 периметру внешней рамки промаркированы.
 
-. link:task/mark_whole_field.jl[mark_whole_field]
+. link:tasks/mark_whole_field.jl[mark_whole_field]
 +
 ДАНО:: Робот - в произвольной клетке ограниченного прямоугольного поля
 +
 РЕЗУЛЬТАТ:: Робот - в исходном положении, и все клетки поля
 промаркированы.
 
-. link:task/slanting_cross.jl[slanting_cross]
+. link:tasks/slanting_cross.jl[slanting_cross]
 +
 ДАНО:: Робот находится в произвольной клетке ограниченного
 прямоугольного поля без внутренних перегородок и маркеров.
