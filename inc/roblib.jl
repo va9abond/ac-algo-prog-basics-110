@@ -94,15 +94,21 @@ end
 
 
 function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
-    path::Vector{Tuple{HorizonSide, Integer}} = []
+    traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
 
-    for side in [side_v, side_h]
-        steps = move!(isborder, robot, side)
-        push!(path, (side, steps))
+    # TODO infinite loop in a trap
+    #
+    # |  R  |  <-- trap
+    # + --- +
+    while (!isborder(robot, side_v) || !isborder(robot, side_h))
+        for side in [side_v, side_h]
+            steps = move!(isborder, robot, side)
+            push!(traversed_path, (side, steps))
+        end
     end
 
-    (!isborder(robot,side_v) || !isborder(robot,side_h)) && (return (false, path))
-    return (true, path)
+    # NOTE do not change return type now to save function interface
+    return (true, traversed_path)
 end
 
 
