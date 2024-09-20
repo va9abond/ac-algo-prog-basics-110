@@ -104,6 +104,25 @@ function iscorner(robot::Robot)::Bool
 end
 
 
+function which_border(robot::Robot)::Tuple{Bool, HorizonSide}
+    for side in [Nord, Sud, West, Ost]
+        (isborder(robot, side)) && (return (true, side))
+    end
+
+    return (false, Nord)
+end
+
+
+function which_borders(robot::Robot)::Tuple{Bool, Vector{HorizonSide}}
+    border_sides::Vector{HorizonSide} = []
+    for side in [Nord, Sud, West, Ost]
+        (isborder(robot, side)) && (push!(border_sides, side))
+    end
+
+    return (!isempty(border_sides), border_sides)
+end
+
+
 function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
     traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
 
