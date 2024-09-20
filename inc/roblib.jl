@@ -172,6 +172,24 @@ function mark_direction!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool,
 end
 
 
+function mark_direction!(robot::Robot, side_v::HorizonSide, side_h::HorizonSide)::Vector{Tuple{HorizonSide, Integer}}
+    traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
+
+    putmarker!(robot)
+    while (!isborder(robot, side_v) && !isborder(robot, side_h))
+        move!(robot, side_v)
+        push!(traversed_path, (side_v, 1))
+
+        move!(robot, side_h)
+        push!(traversed_path, (side_h, 1))
+
+        putmarker!(robot)
+    end
+
+    return traversed_path
+end
+
+
 # mark when parity == 1
 # function mark_chess_direction!(robot::Robot, side::HorizonSide, ::Val{0})::Int8
 # function mark_chess_direction!(robot::Robot, side::HorizonSide, ::Val{1})::Int8
