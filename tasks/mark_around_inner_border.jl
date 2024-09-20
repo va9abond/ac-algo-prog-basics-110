@@ -1,25 +1,40 @@
 include("../inc/roblib.jl")
 
 
-# Search inner border from corner(Nord,West)
-# If true, robot stop on the corner of that inner border
+# Search inner border from corner(Nord,Ost)
+# If true, robot stop on the corner(Nord,Ost) of that inner border
 function find_inner_border!(robot::Robot)::Bool
-    success, path_into_corner = move_into_corner!(robot, side_v=Nord, side_h=West)
+    success, path_into_corner = move_into_corner!(robot, side_v=Nord, side_h=Ost)
     (!success) && (println("failed to reach the corner"), return false)
 
-    direction_limit = reverse_side(Nord)
-    direction_move = reverse_side(West)
+    direction_limit = Sud
+    direction_move = West
 
     while (!isborder(robot, direction_limit))
 
-        while (!isborder(robot, direction_move))
-            move!(robot, direction_move)
-            (isborder(robot, direction_limit)) && (return true)
+        # do not search anything when robot above outer(global) border
+        #                                          vvvvv
+        while (!isborder(robot, direction_move) && !isborder(robot, direction_limit))
+            move!(robot, direction_move) # move horizontally
+
+            # found inner border
+            if (isborder(robot, direction_limit))
+
+                # put robot on the corner(Nord, Ost) if it's not
+                if (direction_move == Ost)
+                    while (isborder(robot, direction_limit))
+                        move!(robot, Ost)
+                    end
+                    move!(robot, West)
+                end
+
+                return true
+            end
+
         end
+        direction_move = reverse_side(direction_move)
 
         move!(robot, direction_limit)
-        (iscorner(robot)) && break
-        direction_move = reverse_side(direction_move)
     end
 
     return false
