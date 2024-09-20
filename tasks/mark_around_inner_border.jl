@@ -53,12 +53,19 @@ function mark_around_border!(robot::Robot)::Bool
 end
 
 
-function main!(robot::Robot)
-    # robot::Robot = Robot(animate=true)
+function main()
+    robot::Robot = Robot("mark_around_inner_border.sit", animate=true)
 
     corner = (Nord, West)
     success, path_into_corner = move_into_corner!(robot, side_v=corner[1], side_h=corner[2])
     (!success) && (println("failed to reach the corner"), return false)
+
+    # mark_perimeter!
+    side::HorizonSide = Sud
+    for _ in 0:3
+        mark_direction!(robot, side) # mark from corner to corner
+        side = next_side(side)
+    end
 
     success = find_inner_border!(robot)
     (!success) && (println("there is no inner border"), return false)
