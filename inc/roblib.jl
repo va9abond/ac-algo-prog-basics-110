@@ -11,6 +11,13 @@ function reverse_side(side::HorizonSide)::HorizonSide
 end
 
 
+# next side by anticlockwise direction
+# ... -> Nord -> West -> Sud -> Ost -> Nord -> ...
+function next_side(side::HorizonSide)::HorizonSide
+    return HorizonSide((Int(side)+1)%4)
+end
+
+
 function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
     reversed_sides::Vector{HorizonSide} = []
     foreach(side -> push!(reversed_sides, reverse_side(side)), path)
