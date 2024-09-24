@@ -212,3 +212,20 @@ function mark_chess_direction!(robot::Robot, side::HorizonSide, init_parity::Int
 
     return parity
 end
+
+
+function find_door!(robot::Robot, border_side::HorizonSide=Nord)::Tuple{HorizonSide, Int}
+    flag_door::Bool = false
+    (!isborder(robot, border_side)) && (flag_door = true)
+
+    steps_in_direction::Int = 1
+    side::HorizonSide = next_side(border_side)
+    while (!flag_door)
+        move!(robot, side, steps_in_direction)
+        (!isborder(robot, Nord)) && (flag_door = true) && (break)
+        steps_in_direction += 1
+        side = reverse_side(side)
+    end
+
+    return (side, Int(ceil(steps_in_direction/2)))
+end
