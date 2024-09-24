@@ -9,12 +9,12 @@ function main()
     (!isborder(robot, Nord)) && (flag_door = true)
 
     steps_in_direction::Int = 1
+    side::HorizonSide = next_side(Nord)
     while (!flag_door)
-        for side_h in [Ost, West]
-            move!(robot, side_h, steps_in_direction)
-            (!isborder(robot, Nord)) && (flag_door = true)
-            steps_in_direction += 1
-        end
+        move!(robot, side, steps_in_direction)
+        (!isborder(robot, Nord)) && (flag_door = true)
+        steps_in_direction += 1
+        side = reverse_side(side)
     end
 
     move!(robot, Nord)
