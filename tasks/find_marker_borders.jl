@@ -1,11 +1,10 @@
 include("../inc/roblib.jl")
 
 
-function main()
-    robot::Robot = Robot("find_marker_borders.sit", animate=true)
-
+function find_marker_borders!(robot::Robot)
     init_side::HorizonSide = Nord
     flag_marker::Bool = false
+
     (ismarker(robot)) && (flag_marker = true)
     putmarker!(robot)
 
@@ -23,5 +22,11 @@ function main()
         side = next_side(side)
         (side == init_side) && (steps_in_direction += 1)
     end
+
 end
 
+
+function main()
+    robot::Robot = Robot("find_marker_borders.sit", animate=true)
+    find_marker_borders!(robot)
+end
