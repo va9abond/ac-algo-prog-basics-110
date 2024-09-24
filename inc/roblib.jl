@@ -214,18 +214,40 @@ function mark_chess_direction!(robot::Robot, side::HorizonSide, init_parity::Int
 end
 
 
-function find_door!(robot::Robot, border_side::HorizonSide=Nord)::Tuple{HorizonSide, Int}
+function find_door!(robot::Robot, border_side::HorizonSide)::Tuple{HorizonSide, Int}
     flag_door::Bool = false
     (!isborder(robot, border_side)) && (flag_door = true)
 
-    steps_in_direction::Int = 1
+    steps_in_direction::Int = 0
     side::HorizonSide = next_side(border_side)
     while (!flag_door)
         move!(robot, side, steps_in_direction)
-        (!isborder(robot, Nord)) && (flag_door = true) && (break)
+        (!isborder(robot, border_side)) && (flag_door = true) && (break)
         steps_in_direction += 1
         side = reverse_side(side)
     end
 
     return (side, Int(ceil(steps_in_direction/2)))
+end
+
+
+function move_through_border!(robot::Robot, side::HorizonSide)
+    # if (!isborder(robot, side))
+    #     move!(robot, side)
+    # else
+    door_side::HorizonSide, steps_untill_door::Int = find_door!(robot, side)
+    move!(robot, side)
+    move!(robot, reverse_side(door_side), steps_untill_door)
+    # end
+end
+
+
+function move_through_borders!(robot::Robot, side::HorizonSide, steps::Int=1)
+    traversed_steps::Int = 0
+
+    while (traversed_steps < steps)
+        move_through_border!(robot, side)
+        traversed_steps += 1
+    end
+
 end
