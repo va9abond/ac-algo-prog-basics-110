@@ -76,7 +76,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 +
 РЕЗУЛЬТАТ:: Робот - в клетке с маркером.
 
-. link:task/mark_chess_whole_field.jl[mark_chess_whole_field]
+. link:tasks/mark_chess_whole_field.jl[mark_chess_whole_field]
 +
 ДАНО:: Робот - в произвольной клетке ограниченного прямоугольного поля
 (без внутренних перегородок)
