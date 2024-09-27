@@ -13,7 +13,7 @@ function find_marker_borders!(robot::Robot)
     side::HorizonSide = init_side
     while (!flag_marker)
         (side == reverse_side(init_side)) && (steps_in_direction += 1)
-        
+
         for i in (1:steps_in_direction)
             move_through_borders!(robot, side)
             (ismarker(robot)) && (flag_marker = true) && (break)
