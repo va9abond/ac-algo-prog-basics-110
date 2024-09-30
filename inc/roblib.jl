@@ -32,8 +32,8 @@ end
 
 
 # move to direction side untill stop_cond
-function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Integer
-    steps_untill_stop_cond::Integer = 0
+function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Int
+    steps_untill_stop_cond::Int = 0
 
     while (!stop_cond(robot, side))
         HorizonSideRobots.move!(robot, side)
@@ -130,8 +130,8 @@ function which_borders(robot::Robot)::Tuple{Bool, Vector{HorizonSide}}
 end
 
 
-function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
-    traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
+function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Int}}}
+    traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
     # TODO infinite loop in a trap
     #
@@ -149,8 +149,8 @@ function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::Horiz
 end
 
 
-function mark_direction!(robot::Robot, side::HorizonSide)::Integer
-    steps_in_direction::Integer = 0
+function mark_direction!(robot::Robot, side::HorizonSide)::Int
+    steps_in_direction::Int = 0
 
     putmarker!(robot)
     while (!isborder(robot, side))
@@ -179,8 +179,8 @@ function mark_direction!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool,
 end
 
 
-function mark_direction!(robot::Robot, side_v::HorizonSide, side_h::HorizonSide)::Vector{Tuple{HorizonSide, Integer}}
-    traversed_path::Vector{Tuple{HorizonSide, Integer}} = []
+function mark_direction!(robot::Robot, side_v::HorizonSide, side_h::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
+    traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
     putmarker!(robot)
     while (!isborder(robot, side_v) && !isborder(robot, side_h))
