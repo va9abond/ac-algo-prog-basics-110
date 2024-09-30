@@ -231,18 +231,16 @@ function find_door!(robot::Robot, border_side::HorizonSide)::Tuple{HorizonSide, 
 end
 
 
+# TODO return false if robot occures in the corner
 function move_through_border!(robot::Robot, side::HorizonSide)
-    # if (!isborder(robot, side))
-    #     move!(robot, side)
-    # else
     door_side::HorizonSide, steps_untill_door::Int = find_door!(robot, side)
     move!(robot, side)
     move!(robot, reverse_side(door_side), steps_untill_door)
-    # end
 end
 
 
-function move_through_borders!(robot::Robot, side::HorizonSide, steps::Int=1)
+# return false if there isn't a way to bypass a border
+function move_through_border!(robot::Robot, side::HorizonSide, steps::Int)
     traversed_steps::Int = 0
 
     while (traversed_steps < steps)
