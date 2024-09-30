@@ -102,7 +102,7 @@ end
 
 function iscorner(robot::Robot)::Bool
     for side_v in [Nord, Sud]
-        for side_h in [West, Sud]
+        for side_h in [West, Ost]
             (isborder(robot, side_v) && isborder(robot, side_h)) && (return true)
         end
     end
