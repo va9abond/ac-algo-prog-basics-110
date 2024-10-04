@@ -1,4 +1,4 @@
-include("../inc/roblib.jl")
+include("inc/roblib.jl")
 
 
 # Search inner border from corner(Nord,Ost)

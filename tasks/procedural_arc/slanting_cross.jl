@@ -1,4 +1,4 @@
-include("../inc/roblib.jl")
+include("inc/roblib.jl")
 
 
 function slanting_cross!(robot::Robot)

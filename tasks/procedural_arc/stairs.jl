@@ -1,4 +1,4 @@
-include("../inc/roblib.jl")
+include("inc/roblib.jl")
 
 
 function mark_stairs!(robot::Robot)::Bool

@@ -1,4 +1,4 @@
-include("../inc/roblib.jl")
+include("inc/roblib.jl")
 
 
 function mark_chess_perimeter!(robot::Robot)::Bool

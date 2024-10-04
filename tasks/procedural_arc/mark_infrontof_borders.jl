@@ -1,4 +1,4 @@
-include("../inc/roblib.jl")
+include("inc/roblib.jl")
 
 
 function mark_infrontof_borders!(robot::Robot)
