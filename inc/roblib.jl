@@ -6,21 +6,6 @@
 using HorizonSideRobots
 
 
-mutable struct rbl_path
-    _path::Vector{Tuple{HorizonSide, Int}}
-end
-
-
-function Base.push!(path::rbl_path, direction::Tuple{HorizonSide, Int})
-    return push!(path._path, direction)
-end
-
-
-# mutable struct rb_coords
-#     coords::@NamedTuple{Int,Int} = (x = Ref(0), y = Ref(0))
-# end
-
-
 function reverse_side(side::HorizonSide)::HorizonSide
     return HorizonSide((Int(side)+2)%4)
 end
