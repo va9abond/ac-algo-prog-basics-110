@@ -6,6 +6,21 @@
 using HorizonSideRobots
 
 
+mutable struct rbl_path
+    _path::Vector{Tuple{HorizonSide, Int}}
+end
+
+
+function Base.push!(path::rbl_path, direction::Tuple{HorizonSide, Int})
+    return push!(path._path, direction)
+end
+
+
+# mutable struct rb_coords
+#     coords::@NamedTuple{Int,Int} = (x = Ref(0), y = Ref(0))
+# end
+
+
 function reverse_side(side::HorizonSide)::HorizonSide
     return HorizonSide((Int(side)+2)%4)
 end
@@ -129,7 +144,7 @@ function which_borders(robot::Robot)::Tuple{Bool, Vector{HorizonSide}}
     return (!isempty(border_sides), border_sides)
 end
 
-
+# TODO refactor
 function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Int}}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
