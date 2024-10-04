@@ -104,7 +104,7 @@ function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::T)::Tup
 end
 
 
-function iscorner(robot::Robot)::Bool
+function iscorner(robot)::Bool
     for side_v in [Nord, Sud]
         for side_h in [West, Ost]
             (isborder(robot, side_v) && isborder(robot, side_h)) && (return true)
@@ -115,7 +115,7 @@ function iscorner(robot::Robot)::Bool
 end
 
 
-function which_border(robot::Robot)::Tuple{Bool, HorizonSide}
+function which_border(robot)::Tuple{Bool, HorizonSide}
     for side in [Nord, Sud, West, Ost]
         (isborder(robot, side)) && (return (true, side))
     end
@@ -124,7 +124,7 @@ function which_border(robot::Robot)::Tuple{Bool, HorizonSide}
 end
 
 
-function which_borders(robot::Robot)::Tuple{Bool, Vector{HorizonSide}}
+function which_borders(robot)::Tuple{Bool, Vector{HorizonSide}}
     border_sides::Vector{HorizonSide} = []
     for side in [Nord, Sud, West, Ost]
         (isborder(robot, side)) && (push!(border_sides, side))
@@ -134,13 +134,9 @@ function which_borders(robot::Robot)::Tuple{Bool, Vector{HorizonSide}}
 end
 
 # TODO refactor
-function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Int}}}
+function move_into_corner!(robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Int}}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
-    # TODO infinite loop in a trap
-    #
-    # |  R  |  <-- trap
-    # + --- +
     while (!isborder(robot, side_v) || !isborder(robot, side_h))
         for side in [side_v, side_h]
             steps = move!(isborder, robot, side)
@@ -153,7 +149,7 @@ function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::Horiz
 end
 
 
-function mark_direction!(robot::Robot, side::HorizonSide)::Int
+function mark_direction!(robot, side::HorizonSide)::Int
     steps_in_direction::Int = 0
 
     putmarker!(robot)
@@ -167,7 +163,7 @@ function mark_direction!(robot::Robot, side::HorizonSide)::Int
 end
 
 
-function mark_direction!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool, T} where T <: Integer
+function mark_direction!(robot, side::HorizonSide, steps::T)::Tuple{Bool, T} where T <: Integer
     traversed_steps::T = 0
 
     putmarker!(robot)
@@ -183,7 +179,7 @@ function mark_direction!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool,
 end
 
 
-function mark_direction!(robot::Robot, side_v::HorizonSide, side_h::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
+function mark_direction!(robot, side_v::HorizonSide, side_h::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
     putmarker!(robot)
@@ -202,9 +198,9 @@ end
 
 
 # mark when parity == 1
-# function mark_chess_direction!(robot::Robot, side::HorizonSide, ::Val{0})::Int8
-# function mark_chess_direction!(robot::Robot, side::HorizonSide, ::Val{1})::Int8
-function mark_chess_direction!(robot::Robot, side::HorizonSide, init_parity::Int8)::Int8
+# function mark_chess_direction!(robot, side::HorizonSide, ::Val{0})::Int8
+# function mark_chess_direction!(robot, side::HorizonSide, ::Val{1})::Int8
+function mark_chess_direction!(robot, side::HorizonSide, init_parity::Int8)::Int8
     parity::Int8 = init_parity
 
     (parity == 1) && (putmarker!(robot))
