@@ -2,6 +2,10 @@
 # TODO move with predicate - stop_cond or while_cond
 # TODO move with predicate - make_before_move | make_after_move
 
+# mutable struct rb_coords
+#     coords::@NamedTuple{Int,Int} = (x = Ref(0), y = Ref(0))
+# end
+
 
 using HorizonSideRobots
 
@@ -214,7 +218,7 @@ function mark_chess_direction!(robot::Robot, side::HorizonSide, init_parity::Int
 end
 
 
-function find_door!(robot::Robot, border_side::HorizonSide)::Tuple{HorizonSide, Int}
+function find_door!(robot, border_side::HorizonSide)::Tuple{HorizonSide, Int}
     flag_door::Bool = false
     (!isborder(robot, border_side)) && (flag_door = true)
 
@@ -232,7 +236,7 @@ end
 
 
 # TODO return false if robot occures in the corner
-function move_through_border!(robot::Robot, side::HorizonSide)
+function move_through_border!(robot, side::HorizonSide)
     door_side::HorizonSide, steps_untill_door::Int = find_door!(robot, side)
     move!(robot, side)
     move!(robot, reverse_side(door_side), steps_untill_door)
@@ -240,7 +244,7 @@ end
 
 
 # return false if there isn't a way to bypass a border
-function move_through_border!(robot::Robot, side::HorizonSide, steps::Int)
+function move_through_border!(robot, side::HorizonSide, steps::Int)
     traversed_steps::Int = 0
 
     while (traversed_steps < steps)
