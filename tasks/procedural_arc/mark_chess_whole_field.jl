@@ -1,4 +1,4 @@
-include("inc/roblib.jl")
+include("../inc/roblib.jl")
 
 
 function mark_chess_whole_field!(robot::Robot)::Bool

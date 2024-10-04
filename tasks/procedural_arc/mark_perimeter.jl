@@ -1,4 +1,4 @@
-include("inc/roblib.jl")
+include("../inc/roblib.jl")
 
 
 function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
