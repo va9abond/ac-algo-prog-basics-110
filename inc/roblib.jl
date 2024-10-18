@@ -65,20 +65,18 @@ function HorizonSideRobots.move!(robot, path::Vector{HorizonSide})::Tuple{Bool, 
 end
 
 
-function HorizonSideRobots.move!(robot::Robot, path::Vector{Tuple{HorizonSide, T}})::Tuple{Bool, Vector{Tuple{HorizonSide, T}}} where T <: Integer
+function HorizonSideRobots.move!(robot, path::Vector{Tuple{HorizonSide, T}})::Tuple{Bool, Vector{Tuple{HorizonSide, T}}} where T <: Integer
     traversed_path::Vector{Tuple{HorizonSide, T}} = []
 
     for (side, steps) in path
-        success, steps_traversed = move!(robot, side, steps)
-        push!(traversed_path, (side, steps_traversed))
+        success, traversed_steps = move!(robot, side, steps)
+        push!(traversed_path, (side, traversed_steps))
 
-        (!success) && (return (false, traversed_path))
+        (!success) && return (false, traversed_path)
     end
 
-    return (true, traversed_path)
+    return (true, path)
 end
-
-
 
 
 function iscorner(robot)::Bool
