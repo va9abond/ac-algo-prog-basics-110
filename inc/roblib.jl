@@ -39,22 +39,6 @@ function HorizonSideRobots.move!(stop_cond::Function, robot, side::HorizonSide):
 end
 
 
-function move_with_act!(stop_cond::Function,
-                        robot::Robot, side::HorizonSide;
-                        pre_act::Function, post_act::Function)::Vector{HorizonSide}
-    traversed_path::Vector{HorizonSide} = []
-
-    while (!stop_cond(robot, side))
-        pre_act(robot)
-        HorizonSideRobots.move!(robot, side)
-        push!(traversed_path, side)
-        post_act(robot)
-    end
-
-    return traversed_path
-end
-
-
 function HorizonSideRobots.move!(robot::Robot, path::Vector{HorizonSide})::Tuple{Bool, Vector{HorizonSide}}
     traversed_path::Vector{HorizonSide} = []
 
