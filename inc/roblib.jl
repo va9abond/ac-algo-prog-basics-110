@@ -26,12 +26,12 @@ function reverse_path(path::Vector{Tuple{HorizonSide, T}})::Vector{Tuple{Horizon
 end
 
 
-# move to direction side untill stop_cond
-function HorizonSideRobots.move!(stop_cond::Function, robot::Robot, side::HorizonSide)::Int
+# move in the direction untill stop_cond
+function HorizonSideRobots.move!(stop_cond::Function, robot, side::HorizonSide)::Int
     steps_untill_stop_cond::Int = 0
 
-    while (!stop_cond(robot, side))
-        HorizonSideRobots.move!(robot, side)
+    while (!stop_cond())
+        move!(robot, side)
         steps_untill_stop_cond += 1
     end
 
