@@ -26,6 +26,19 @@ function reverse_path(path::Vector{Tuple{HorizonSide, T}})::Vector{Tuple{Horizon
 end
 
 
+function HorizonSideRobots.move!(robot, side::HorizonSide, steps::T)::Tuple{Bool, Integer} where T <: Integer
+    traversed_steps::T = 0
+
+    while (traversed_steps < steps)
+        isborder(robot, side) && return (false, traversed_steps)
+        move!(robot, side)
+        traversed_steps += 1
+    end
+
+    return (true, steps)
+end
+
+
 # move in the direction untill stop_cond
 function HorizonSideRobots.move!(stop_cond::Function, robot, side::HorizonSide)::Int
     steps_untill_stop_cond::Int = 0
@@ -66,17 +79,6 @@ function HorizonSideRobots.move!(robot::Robot, path::Vector{Tuple{HorizonSide, T
 end
 
 
-function HorizonSideRobots.move!(robot::Robot, side::HorizonSide, steps::T)::Tuple{Bool, Integer} where T <: Integer
-    traversed_steps::T = 0
-
-    while (traversed_steps < steps)
-        (isborder(robot, side)) && (return (false, traversed_steps))
-        move!(robot, side)
-        traversed_steps += 1
-    end
-
-    return (true, steps)
-end
 
 
 function iscorner(robot)::Bool
