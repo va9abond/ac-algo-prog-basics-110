@@ -51,3 +51,9 @@ function HorizonSideRobots.move!(robot::Slug, path::Vector{Tuple{HorizonSide, In
 
     return (true, traversed_path)
 end
+
+
+function make_checkpoint(robot::Slug)::Vector{Tuple{HorizonSide, Int}}
+    traversed_path = robot._path
+    return empty!(robot._path)
+end
