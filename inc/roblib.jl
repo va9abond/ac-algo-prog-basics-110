@@ -82,31 +82,13 @@ end
 function iscorner(robot)::Bool
     for side_v in [Nord, Sud]
         for side_h in [West, Ost]
-            (isborder(robot, side_v) && isborder(robot, side_h)) && (return true)
+            isborder(robot, side_v) && isborder(robot, side_h) && return true
         end
     end
 
     return false
 end
 
-
-function which_border(robot)::Tuple{Bool, HorizonSide}
-    for side in [Nord, Sud, West, Ost]
-        (isborder(robot, side)) && (return (true, side))
-    end
-
-    return (false, Nord)
-end
-
-
-function which_borders(robot)::Tuple{Bool, Vector{HorizonSide}}
-    border_sides::Vector{HorizonSide} = []
-    for side in [Nord, Sud, West, Ost]
-        (isborder(robot, side)) && (push!(border_sides, side))
-    end
-
-    return (!isempty(border_sides), border_sides)
-end
 
 # TODO refactor
 function move_into_corner!(robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Int}}}
