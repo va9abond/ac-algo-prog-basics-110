@@ -17,10 +17,7 @@ end
 
 
 function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
-    reversed_sides::Vector{HorizonSide} = []
-    foreach(side -> push!(reversed_sides, reverse_side(side)), path)
-
-    return reverse!(reversed_sides)
+    return reverse!(map(p -> reverse_side(p), path))
 end
 
 
