@@ -1,10 +1,4 @@
-# TODO import HorizonSideRobots as HSR
-# TODO move with predicate - stop_cond or while_cond
-# TODO move with predicate - make_before_move | make_after_move
-
-# mutable struct rb_coords
-#     coords::@NamedTuple{Int,Int} = (x = Ref(0), y = Ref(0))
-# end
+# TODO wrap "roblib.jl" in module
 
 
 using HorizonSideRobots
