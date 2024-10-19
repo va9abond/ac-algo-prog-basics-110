@@ -177,20 +177,22 @@ function mark_chess_direction!(robot, side::HorizonSide, parity::Int)::Int
 end
 
 
-function find_door!(robot, border_side::HorizonSide)::Tuple{HorizonSide, Int}
-    flag_door::Bool = false
-    (!isborder(robot, border_side)) && (flag_door = true)
+# swing from side to side increasing the amplitude while not reach the stop_cond*
+# return last side and amplitude in that side
+# [WARNIGN]: (*) stop_cond may not be reached
+# TODO returning value should contain info about reaching stop_cond
+function swing!(stop_cond::Function, robot, side::HorizonSide = West)::Tuple{HorizonSide, Int}
+    amplitude::Int = 0
 
-    steps_in_direction::Int = 0
-    side::HorizonSide = next_side(border_side)
-    while (!flag_door)
-        move!(robot, side, steps_in_direction)
-        (!isborder(robot, border_side)) && (flag_door = true) && (break)
-        steps_in_direction += 1
+    while (!stop_cond())
+        amplitude += 1
         side = reverse_side(side)
+
+        success::Bool = move!(robot, side, amplitude)[1]
+        !success && print("move_swing!(...): robot met a border on his way and not achieved stop condition"), break
     end
 
-    return (side, Int(ceil(steps_in_direction/2)))
+    return (side, Int(ceil(amplitude/2)))
 end
 
 
