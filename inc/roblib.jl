@@ -109,7 +109,7 @@ end
 
 
 function mark_direction!(robot, side::HorizonSide)::Int
-    steps_in_direction::Int = 0
+    traversed_steps::Int = 0
 
     putmarker!(robot)
     while (!isborder(robot, side))
@@ -118,21 +118,22 @@ function mark_direction!(robot, side::HorizonSide)::Int
         putmarker!(robot)
     end
 
-    return steps_in_direction
+    return traversed_steps
 end
 
 
+# TODO previous or current design is better?
 function mark_direction!(robot, side::HorizonSide, steps::T)::Tuple{Bool, T} where T <: Integer
     traversed_steps::T = 0
 
     putmarker!(robot)
-    while (traversed_steps < steps)
-        (isborder(robot, side)) && (return (false, traversed_steps))
-
+    while (traversed_steps < steps && !isborder(robot, side))
         move!(robot, side)
         traversed_steps += 1
         putmarker!(robot)
     end
+
+    (traversed_steps != steps) && return (false, traversed_steps)
 
     return (true, steps)
 end
