@@ -196,21 +196,26 @@ function swing!(stop_cond::Function, robot, side::HorizonSide = West)::Tuple{Hor
 end
 
 
-# TODO return false if robot occures in the corner
-function move_through_border!(robot, side::HorizonSide)
-    door_side::HorizonSide, steps_untill_door::Int = find_door!(robot, side)
-    move!(robot, side)
-    move!(robot, reverse_side(door_side), steps_untill_door)
+# try to bypass plain border
+# TODO consider returned value from swing!
+function bypass_plane!(robot, side::HorizonSide)::Bool
+    gateway_side::HorizonSide, steps_from_gateway::Int = swing!(()->!isborder(robot, side), robot, next_side(side))
+    move!(robot, side) # move robot to the gateway
+    success::Bool = move!(robot, reverse_side(gateway_side), steps_from_gateway)[1]
+
+    return success
 end
 
 
-# return false if there isn't a way to bypass a border
-function move_through_border!(robot, side::HorizonSide, steps::Int)
+function move_bypass_plane!(robot, side::HorizonSide, steps::Int)::Bool
     traversed_steps::Int = 0
 
     while (traversed_steps < steps)
-        move_through_border!(robot, side)
+        success::Bool = bypass_plane!(robot, side)
+        !success && return false
+
         traversed_steps += 1
     end
 
+    return true
 end
