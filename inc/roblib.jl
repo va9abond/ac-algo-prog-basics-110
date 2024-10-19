@@ -122,7 +122,6 @@ function mark_direction!(robot, side::HorizonSide)::Int
 end
 
 
-# TODO previous or current design is better?
 function mark_direction!(robot, side::HorizonSide, steps::T)::Tuple{Bool, T} where T <: Integer
     traversed_steps::T = 0
 
@@ -160,17 +159,18 @@ function mark_direction!(robot, side1::HorizonSide, side2::HorizonSide)::Vector{
 end
 
 
-# mark when parity == 1
+# [WARNING]: test is needed
 # function mark_chess_direction!(robot, side::HorizonSide, ::Val{0})::Int8
 # function mark_chess_direction!(robot, side::HorizonSide, ::Val{1})::Int8
-function mark_chess_direction!(robot, side::HorizonSide, init_parity::Int8)::Int8
-    parity::Int8 = init_parity
+function mark_chess_direction!(robot, side::HorizonSide, parity::Int)::Int
+    parity = mod(parity, 2) # expensive? parity is 1 or 0 now
 
-    (parity == 1) && (putmarker!(robot))
+    (parity == 1) && putmarker!(robot)
+    parity = 1 - parity
     while (!isborder(robot, side))
         move!(robot, side)
-        parity = (parity+1) % 2
-        (parity == 1) && (putmarker!(robot))
+        (parity == 1) && putmarker!(robot)
+        parity = 1 - parity
     end
 
     return parity
