@@ -95,7 +95,7 @@ function move_into_corner!(robot, corner::Tuple{HorizonSide, HorizonSide})::Vect
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
     side1, side2 = corner[1], corner[2]
 
-    VERIFY(abs( Int(side1)-Int(side2) ) != 2, "move_into_corner!(...): ($side1, $side2) is not a corner")
+    (abs( Int(side1)-Int(side2) ) == 2) && print("move_into_corner!(...): ($side1, $side2) is not a corner"), return traversed_path
 
     while (!isborder(robot, side1) || !isborder(robot, side2))
         for side in [side1, side2]
@@ -143,7 +143,7 @@ end
 function mark_direction!(robot, side1::HorizonSide, side2::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
-    (abs( Int(side1)-Int(side2) ) == 2) && "mark_direction!(...): $side1, $side2 bad direction", return traversed_path
+    (abs( Int(side1)-Int(side2) ) == 2) && print("mark_direction!(...): $side1, $side2 bad direction"), return traversed_path
 
     putmarker!(robot)
     while (!isborder(robot, side1) && !isborder(robot, side2))
