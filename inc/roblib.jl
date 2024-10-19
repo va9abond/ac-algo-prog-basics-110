@@ -1,4 +1,5 @@
 # TODO wrap "roblib.jl" in module
+include("utils.jl")
 
 
 using HorizonSideRobots
@@ -90,19 +91,20 @@ function iscorner(robot)::Bool
 end
 
 
-# TODO refactor
-function move_into_corner!(robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Int}}}
+function move_into_corner!(robot, corner::Tuple{HorizonSide, HorizonSide})::Vector{Tuple{HorizonSide, Int}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
+    side1, side2 = corner[1], corner[2]
 
-    while (!isborder(robot, side_v) || !isborder(robot, side_h))
-        for side in [side_v, side_h]
+    VERIFY(abs( Int(side1)-Int(side2) ) != 2, "move_into_corner!(...): ($side1, $side2) is not a corner")
+
+    while (!isborder(robot, side1) || !isborder(robot, side2))
+        for side in [side1, side2]
             steps = move!(isborder, robot, side)
             push!(traversed_path, (side, steps))
         end
     end
 
-    # NOTE do not change return type now to save function interface
-    return (true, traversed_path)
+    return traversed_path
 end
 
 
