@@ -139,16 +139,19 @@ function mark_direction!(robot, side::HorizonSide, steps::T)::Tuple{Bool, T} whe
 end
 
 
-function mark_direction!(robot, side_v::HorizonSide, side_h::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
+# for slanting cross
+function mark_direction!(robot, side1::HorizonSide, side2::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
-    putmarker!(robot)
-    while (!isborder(robot, side_v) && !isborder(robot, side_h))
-        move!(robot, side_v)
-        push!(traversed_path, (side_v, 1))
+    (abs( Int(side1)-Int(side2) ) == 2) && "mark_direction!(...): $side1, $side2 bad direction", return traversed_path
 
-        move!(robot, side_h)
-        push!(traversed_path, (side_h, 1))
+    putmarker!(robot)
+    while (!isborder(robot, side1) && !isborder(robot, side2))
+        move!(robot, side1)
+        push!(traversed_path, (side1, 1))
+
+        move!(robot, side1)
+        push!(traversed_path, (side2, 1))
 
         putmarker!(robot)
     end
