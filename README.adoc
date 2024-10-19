@@ -7,7 +7,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 
 == Task List
 
-. link:tasks/cross.jl[cross]
+. link:tasks/1-cross.jl[1-cross]
 +
 ДАНО:: Робот находится в произвольной клетке ограниченного прямоугольного
     поля без внутренних перегородок и маркеров.
@@ -16,21 +16,21 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 расставленных вплоть до внешней рамки (в клетке с роботом маркера
 нет).
 
-. link:tasks/mark_perimeter.jl[mark_perimeter]
+. link:tasks/2-mark_perimeter.jl[2-mark_perimeter]
 +
 ДАНО:: Робот - в произвольной клетке поля (без внутренних перегородок и маркеров)
 +
 РЕЗУЛЬТАТ:: Робот - в исходном положении, и все клетки по
 периметру внешней рамки промаркированы.
 
-. link:tasks/mark_whole_field.jl[mark_whole_field]
+. link:tasks/3-mark_whole_field.jl[3-mark_whole_field]
 +
 ДАНО:: Робот - в произвольной клетке ограниченного прямоугольного поля
 +
 РЕЗУЛЬТАТ:: Робот - в исходном положении, и все клетки поля
 промаркированы.
 
-. link:tasks/slanting_cross.jl[slanting_cross]
+. link:tasks/4-slanting_cross.jl[4-slanting_cross]
 +
 ДАНО:: Робот находится в произвольной клетке ограниченного
 прямоугольного поля без внутренних перегородок и маркеров.
@@ -38,7 +38,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 РЕЗУЛЬТАТ:: Робот — в исходном положении в центре косого креста из
 маркеров, расставленных вплоть до внешней рамки.
 
-. link:tasks/mark_around_inner_border.jl[mark_around_inner_border]
+. link:tasks/5-mark_around_inner_border.jl[5-mark_around_inner_border]
 +
 ДАНО:: На ограниченном внешней прямоугольной рамкой поле имеется ровно
 одна внутренняя перегородка в форме прямоугольника. Робот - в
@@ -48,7 +48,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 внутренней, как внутренней, так и внешней, перегородки поставлены
 маркеры.
 
-. In progress link:tasks/mark_perimeter_borders.jl[mark_perimeter_borders]
+. In progress link:tasks/6-mark_perimeter_borders.jl[6-mark_perimeter_borders]
 +
 ДАНО:: Робот - в произвольной клетке ограниченного прямоугольного
 поля, на котором могут находиться также внутренние прямоугольные
@@ -60,7 +60,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 - маркеры не во всех клетках периметра, а только в 4-х позициях -
   напротив исходного положения робота.
 
-. link:tasks/find_door.jl[find_door]
+. link:tasks/7-bypass_plain.jl[7-bypass_plain]
 +
 ДАНО:: Робот - рядом с горизонтальной бесконечно продолжающейся в обе
 стороны перегородкой (под ней), в которой имеется проход шириной в
@@ -68,7 +68,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 +
 РЕЗУЛЬТАТ:: Робот - в клетке под проходом
 
-. link:tasks/find_marker.jl[find_marker]
+. link:tasks/8-find_marker_spiral.jl[8-find_marker_spiral]
 +
 ДАНО:: Где-то на неограниченном со всех сторон поле без внутренних
 перегородок имеется единственный маркер. Робот - в произвольной клетке
@@ -76,7 +76,7 @@ Rustem Sirazetdinov <avesirazetdinov@gmail.com>
 +
 РЕЗУЛЬТАТ:: Робот - в клетке с маркером.
 
-. link:tasks/mark_chess_whole_field.jl[mark_chess_whole_field]
+. link:tasks/9-mark_chess_whole_field.jl[9-mark_chess_whole_field]
 +
 ДАНО:: Робот - в произвольной клетке ограниченного прямоугольного поля
 (без внутренних перегородок)
