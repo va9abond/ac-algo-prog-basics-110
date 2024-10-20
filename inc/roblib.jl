@@ -95,11 +95,12 @@ function move_into_corner!(robot, corner::Tuple{HorizonSide, HorizonSide})::Vect
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
     side1, side2 = corner[1], corner[2]
 
-    (abs( Int(side1)-Int(side2) ) == 2) && print("move_into_corner!(...): ($side1, $side2) is not a corner"), return traversed_path
+    # TODO should i prove corner here or somewhere before move_into_corner!
+    (abs( Int(side1)-Int(side2) ) == 2) && (print("move_into_corner!(...): ($side1, $side2) is not a corner\n"), return traversed_path)
 
     while (!isborder(robot, side1) || !isborder(robot, side2))
         for side in [side1, side2]
-            steps = move!(isborder, robot, side)
+            steps = move!(()->isborder(robot, side), robot, side)
             push!(traversed_path, (side, steps))
         end
     end
