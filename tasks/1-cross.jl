@@ -10,6 +10,6 @@ end
 
 
 function main!()
-    robot::Robot = Robot("1-cross.sit", animate=true)
+    robot::Robot = Robot("random_pos_no_borders.sit", animate=true)
     cross!(robot)
 end
