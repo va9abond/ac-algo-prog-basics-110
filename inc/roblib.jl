@@ -114,7 +114,7 @@ function mark_direction!(robot, side::HorizonSide)::Int
     putmarker!(robot)
     while (!isborder(robot, side))
         move!(robot, side)
-        steps_in_direction += 1
+        traversed_steps += 1
         putmarker!(robot)
     end
 
