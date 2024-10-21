@@ -80,14 +80,28 @@ function HorizonSideRobots.move!(robot, path::Vector{Tuple{HorizonSide, T}})::Tu
 end
 
 
-function iscorner(robot)::Bool
-    for side_v in [Nord, Sud]
-        for side_h in [West, Ost]
-            isborder(robot, side_v) && isborder(robot, side_h) && return true
+function borders_around(robot)::Vector{HorizonSide}
+    border_sides::Vector{HorizonSide} = []
+
+    for side in [Nord, West, Sud, Ost]
+        if (isborder(robot, side))
+            push!(border_sides, side)
         end
     end
 
-    return false
+    return border_sides
+end
+
+
+function iscorner(robot)::Bool
+    border_sides::Vector{HorizonSide} = borders_around(robot)
+
+    border_sides_sum = sum(Int, border_sides)
+    ( length(border_sides) != 2 ||
+      border_sides_sum == 2 ||
+      border_sides_sum == 4 ) && return false
+
+    return true
 end
 
 
