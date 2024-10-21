@@ -157,15 +157,26 @@ end
 function mark_direction!(robot, side1::HorizonSide, side2::HorizonSide)::Vector{Tuple{HorizonSide, Int}}
     traversed_path::Vector{Tuple{HorizonSide, Int}} = []
 
-    (abs( Int(side1)-Int(side2) ) == 2) && print("mark_direction!(...): $side1, $side2 bad direction"), return traversed_path
+    (abs( Int(side1)-Int(side2) ) == 2) && (WARN("mark_direction!(...): $side1, $side2 bad direction"), return traversed_path)
 
+    # TODO order of side1 and side2 shouldn't play any role
+    # we can try 2 ways 1) side1 -> side2; and 2) side2 -> side1
+    # and if all of them are imposible than we break the while loop
     putmarker!(robot)
-    while (!isborder(robot, side1) && !isborder(robot, side2))
-        move!(robot, side1)
-        push!(traversed_path, (side1, 1))
+    while (true)
+        if (!isborder(robot, side1))
+            move!(robot, side1)
+            push!(traversed_path, (side1, 1))
+        else
+            break
+        end
 
-        move!(robot, side1)
-        push!(traversed_path, (side2, 1))
+        if (!isborder(robot, side2))
+            move!(robot, side2)
+            push!(traversed_path, (side2, 1))
+        else
+            break
+        end
 
         putmarker!(robot)
     end
