@@ -1,40 +1,34 @@
 include("../inc/roblib.jl")
 
 
-function move_into_corner!(robot::Robot; side_v::HorizonSide=Nord, side_h::HorizonSide=West)::Tuple{Bool, Vector{Tuple{HorizonSide, Integer}}}
-    path::Vector{Tuple{HorizonSide, Integer}} = []
+function mark_all!(robot, corner::NTuple{2, HorizonSide})
+    # TODO where this check should be? there or before function call
+    !iscorner(robot) && (WARN("robot is not in the corner"), return nothing)
 
-    for side in [side_v, side_h]
-        steps = move!(isborder, robot, side)
-        push!(path, (side, steps))
+    direction_border::HorizonSide = reverse_side(corner[1])
+    direction_in_row::HorizonSide = reverse_side(corner[2])
+
+    # snake movement
+    mark_direction!(robot, direction_in_row)
+    while (!isborder(robot, direction_border))
+        move!(robot, direction_border)
+
+        direction_in_row = reverse_side(direction_in_row)
+        mark_direction!(robot, direction_in_row)
     end
 
-    (!isborder(robot,side_v) || !isborder(robot,side_h)) && (return (false, path))
-    return (true, path)
+    return nothing
 end
 
 
-function mark_whole_field!(robot::Robot)::Bool
-    corner = @NamedTuple{side_v::HorizonSide, side_h::HorizonSide}((Nord, West))
-    success, path_into_corner = move_into_corner!(robot, side_v=corner.side_v, side_h=corner.side_h)
-    (!success) && (println("failed to reach the corner"), return false)
+function main!()
+    robot::Robot = Robot("random_pos_no_borders.sit", animate=true)
 
-    direction_limit::HorizonSide = reverse_side(corner.side_v)
-    direction::HorizonSide = reverse_side(corner.side_h)
+    corner = (Nord, Ost)
+    path_into_corner = move_into_corner!(robot, corner)
 
-    mark_direction!(robot, direction)
-    while (!isborder(robot, direction_limit))
-        move!(robot, direction_limit)
+    mark_all!(robot, corner)
 
-        direction = reverse_side(direction)
-        mark_direction!(robot, direction)
-    end
-
-    success = move_into_corner!(robot, side_v=corner.side_v, side_h=corner.side_h)[1]
-    (!success) && (println("failed to reach the corner"), return false)
-
-    success = move!(robot, reverse_path(path_into_corner))[1]
-    (!success) && (println("failed to return to the starting position"), return false)
-
-    return true
+    move_into_corner!(robot, corner)
+    move!(robot, reverse_path(path_into_corner))
 end
