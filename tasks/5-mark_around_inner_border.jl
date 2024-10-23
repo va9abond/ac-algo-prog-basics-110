@@ -1,47 +1,59 @@
 include("../inc/roblib.jl")
 
 
-# Search inner border from corner(Nord,Ost)
-# If true, robot stop on the corner(Nord,Ost) of that inner border
-function find_inner_border!(robot::Robot)::Bool
-    success, path_into_corner = move_into_corner!(robot, side_v=Nord, side_h=Ost)
-    (!success) && (println("failed to reach the corner"), return false)
+# Search inner border from corner (Nord,Ost)
+# If inner border exists, function return true and
+# robot on the (Nord,Ost) corner of that border
+#                    R
+#             ...--- +
+#                    |
+#                   ...
+function find_inner_border!(robot)::Bool
+    path_into_corner = move_into_corner!(robot, (Nord, Ost))
 
-    direction_limit = Sud
-    direction_move = West
+    direction_border::HorizonSide = Sud
+    direction_in_row::HorizonSide = West
 
-    while (!isborder(robot, direction_limit))
+    # find inner border
+    while (!isborder(robot, direction_border))
+        move!(
+            () -> isborder(robot, direction_border) || isborder(robot, direction_in_row),
+            robot, direction_in_row
+        )
 
-        # do not search anything when robot above outer(global) border
-        #                                          vvvvv
-        while (!isborder(robot, direction_move) && !isborder(robot, direction_limit))
-            move!(robot, direction_move) # move horizontally
-
-            # found inner border
-            if (isborder(robot, direction_limit))
-
-                # put robot on the corner(Nord, Ost) if it's not
-                if (direction_move == Ost)
-                    while (isborder(robot, direction_limit))
-                        move!(robot, Ost)
-                    end
-                    move!(robot, West)
-                end
-
-                return true
-            end
-
+        direction_in_row = reverse_side(direction_in_row)
+        if (!isborder(robot, direction_border))
+            move!(robot, direction_border)
         end
-        direction_move = reverse_side(direction_move)
-
-        move!(robot, direction_limit)
     end
 
-    return false
+    # there is no any inner border
+    #  |     |
+    #  |R   R|
+    #  + --- +
+    if (isborder(robot, West) || isborder(robot, Ost))
+        return false
+    end
+
+    # inner border has been found, put robot on the (Nord, Ost) corner if it's not
+    if (direction_in_row == Ost)
+        # R
+        # + ------ +     NOW
+        # |        |
+
+        move!(() -> !isborder(robot, direction_border), robot, Ost)
+        move!(robot, West)
+
+        #          R
+        # + ------ +     NOW
+        # |        |
+    end
+
+    return true
 end
 
 
-function mark_around_border!(robot::Robot)::Bool
+function mark_around_border!(robot)::Nothing
     # START: robot stay on the corner(Nord,Ost) of inner border
     direction_border = Sud
     direction_move = West
@@ -61,16 +73,15 @@ function mark_around_border!(robot::Robot)::Bool
         direction_border = next_side(direction_border)
     end
 
-    return true
+    return nothing
 end
 
 
-function main()
-    robot::Robot = Robot("mark_around_inner_border.sit", animate=true)
+function main!()
+    robot::Robot = Robot("inner_border_convex.sit", animate=true)
 
     corner = (Nord, Ost)
-    success, path_into_corner = move_into_corner!(robot, side_v=corner[1], side_h=corner[2])
-    (!success) && (println("failed to reach the corner"), return false)
+    path_into_corner = move_into_corner!(robot, corner)
 
     # mark_perimeter!
     side::HorizonSide = reverse_side(corner[2])
@@ -80,15 +91,31 @@ function main()
     end
 
     success = find_inner_border!(robot)
-    (!success) && (println("there is no inner border"), return false)
+    (!success) && (WARN("there is no inner border"), return)
 
     mark_around_border!(robot)
 
-    success = move_into_corner!(robot, side_v=corner[1], side_h=corner[2])[1]
-    (!success) && (println("failed to reach the corner"), return false)
+    move_into_corner!(robot, corner)
+    move!(robot, reverse_path(path_into_corner))
+end
 
-    success = move!(robot, reverse_path(path_into_corner))[1]
-    (!success) && (println("failed to return to the starting position"), return false)
 
-    return true
+function main!(robot)
+    corner = (Nord, Ost)
+    path_into_corner = move_into_corner!(robot, corner)
+
+    # mark_perimeter!
+    side::HorizonSide = reverse_side(corner[2])
+    for _ in 0:3
+        mark_direction!(robot, side) # mark from corner to corner
+        side = next_side(side)
+    end
+
+    success = find_inner_border!(robot)
+    (!success) && (WARN("there is no inner border"), return nothing)
+
+    mark_around_border!(robot)
+
+    move_into_corner!(robot, corner)
+    move!(robot, reverse_path(path_into_corner))
 end
