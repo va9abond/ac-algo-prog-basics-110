@@ -207,18 +207,37 @@ end
 # return last side and amplitude in that side
 # [WARNIGN]: (*) stop_cond may not be reached
 # TODO returning value should contain info about reaching stop_cond
-function swing!(stop_cond::Function, robot, side::HorizonSide = West)::Tuple{HorizonSide, Int}
-    amplitude::Int = 0
+function swing!(stop_cond::Function, robot, init_side::HorizonSide = West)::Tuple{HorizonSide, Int}
+    amplitude::Int = 0 # not perfect var name
+    success::Bool = true
+    side::HorizonSide = init_side
 
-    while (!stop_cond())
+    # swing from side to side increasing amplitude untill (a door is found) or (border is met)
+    while (!stop_cond() && success)
         amplitude += 1
         side = reverse_side(side)
 
-        success::Bool = move!(robot, side, amplitude)[1]
-        !success && print("move_swing!(...): robot met a border on his way and not achieved stop condition"), break
+        success = move!(robot, side, amplitude)[1]
     end
 
-    return (side, Int(ceil(amplitude/2)))
+    # robot met (a border) but not (a door)
+    if (!success)
+        side = reverse_side(side)
+        move!(robot, side, Int(ceil(amplitude/2))-1)
+        amplitude = move!(stop_cond, robot, side)
+    end
+
+    # robot met a border again (in other direction) ==>
+    # ==> there is no a door
+    if (!stop_cond())
+        return (reverse_side(init_side), 0) # returned side != init_side
+    end
+
+    if (success)
+        return (side, Int(ceil(amplitude/2)))
+    else
+        return (side, amplitude)
+    end
 end
 
 
