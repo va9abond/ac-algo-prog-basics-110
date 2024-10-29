@@ -205,9 +205,7 @@ end
 
 # swing from side to side increasing the amplitude while not reach the stop_cond*
 # return last side and amplitude in that side
-# [WARNIGN]: (*) stop_cond may not be reached
-# TODO returning value should contain info about reaching stop_cond
-function swing!(stop_cond::Function, robot, init_side::HorizonSide = West)::Tuple{HorizonSide, Int}
+function move_swing!(stop_cond::Function, robot, init_side::HorizonSide = West)::Tuple{HorizonSide, Int}
     amplitude::Int = 0 # not perfect var name
     success::Bool = true
     side::HorizonSide = init_side
@@ -244,7 +242,7 @@ end
 # try to bypass plain border
 # TODO consider returned value from swing!
 function bypass_plane!(robot, side::HorizonSide)::Bool
-    gateway_side::HorizonSide, steps_from_gateway::Int = swing!(()->!isborder(robot, side), robot, next_side(side))
+    gateway_side::HorizonSide, steps_from_gateway::Int = move_swing!(()->!isborder(robot, side), robot, next_side(side))
     move!(robot, side) # move robot to the gateway
     success::Bool = move!(robot, reverse_side(gateway_side), steps_from_gateway)[1]
 
