@@ -196,13 +196,12 @@ end
 function mark_chess_direction!(robot, side::HorizonSide, parity::Int)::Int
     parity = mod(parity, 2) # expensive? parity is 1 or 0 now
 
-    (parity == 1) && putmarker!(robot)
-    parity = 1 - parity
     while (!isborder(robot, side))
-        move!(robot, side)
         (parity == 1) && putmarker!(robot)
         parity = 1 - parity
+        move!(robot, side)
     end
+    (parity == 1) && putmarker!(robot)
 
     return parity
 end
