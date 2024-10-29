@@ -27,6 +27,11 @@ function reverse_path(path::Vector{Tuple{HorizonSide, T}})::Vector{Tuple{Horizon
 end
 
 
+function iscollinear(side1::HorizonSide, side2::HorizonSide)
+    return mod(Int(side1), 2) == mod(Int(side2), 2)
+end
+
+
 function HorizonSideRobots.move!(robot, side::HorizonSide, steps::T)::Tuple{Bool, Integer} where T <: Integer
     traversed_steps::T = 0
 
@@ -205,7 +210,7 @@ end
 
 # swing from side to side increasing the amplitude while not reach the stop_cond*
 # return last side and amplitude in that side
-function move_swing!(stop_cond::Function, robot, init_side::HorizonSide = West)::Tuple{HorizonSide, Int}
+function move_swing!(stop_cond::Function, robot, init_side::HorizonSide=West)::Tuple{HorizonSide, Int}
     amplitude::Int = 0 # not perfect var name
     success::Bool = true
     side::HorizonSide = init_side
@@ -261,4 +266,21 @@ function move_bypass_plane!(robot, side::HorizonSide, steps::Int)::Bool
     end
 
     return true
+end
+
+
+function move_spiral!(stop_cond::Function, robot, init_side::HorizonSide=West)
+    side::HorizonSide = init_side
+    steps_side::Int = 1
+
+    while (!stop_cond())
+
+        for _ in (1:steps_side)
+            move!(robot, side)
+            (stop_cond()) && break
+        end
+
+        side = next_side(side)
+        (iscollinear(side, init_side)) && (steps_side += 1)
+    end
 end
