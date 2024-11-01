@@ -283,3 +283,23 @@ function move_spiral!(stop_cond::Function, robot, init_side::HorizonSide=West)
         (iscollinear(side, init_side)) && (steps_side += 1)
     end
 end
+
+
+function move_snake!(stop_cond::Function, robot;
+        side_move::HorizonSide, side_in_row::HorizonSide=next_side(side_move))::Bool
+
+    success::Bool = stop_cond()
+    direction_in_row::HorizonSide = side_in_row
+
+    move!(()->(stop_cond() || isborder(robot, direction_in_row)), robot, direction_in_row)
+
+    while ( !(success = stop_cond()) && !isborder(robot, side_move) )
+        move!(robot, side_move)
+
+        direction_in_row = reverse_side(direction_in_row)
+
+        move!(()->(stop_cond() || isborder(robot, direction_in_row)), robot, direction_in_row)
+    end
+
+    return success
+end
