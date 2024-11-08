@@ -17,6 +17,11 @@ function next_side(side::HorizonSide)::HorizonSide
 end
 
 
+function reverse_corner(corner::NTuple{2, HorizonSide})
+    return (reverse_side(corner[1]), reverse_side(corner[2]))
+end
+
+
 function reverse_path(path::Vector{HorizonSide})::Vector{HorizonSide}
     return reverse!(map(p -> reverse_side(p), path))
 end
@@ -102,11 +107,17 @@ function iscorner(robot)::Bool
     border_sides::Vector{HorizonSide} = borders_around(robot)
 
     border_sides_sum = sum(Int, border_sides)
+
     ( length(border_sides) != 2 ||
       border_sides_sum == 2 ||
       border_sides_sum == 4 ) && return false
 
     return true
+end
+
+
+function iscorner(robot, corner::NTuple{2, HorizonSide})::Bool
+    return isborder(robot, corner[1]) && isborder(robot, corner[2]) && !isborder(robot, reverse_side(corner[1])) && !isborder(robot, reverse_side(corner[2]))
 end
 
 
@@ -286,7 +297,8 @@ end
 
 
 function move_snake!(stop_cond::Function, robot;
-        side_move::HorizonSide, side_in_row::HorizonSide=next_side(side_move))::Bool
+        side_move::HorizonSide,
+        side_in_row::HorizonSide=next_side(side_move))::Bool
 
     success::Bool = stop_cond()
     direction_in_row::HorizonSide = side_in_row
