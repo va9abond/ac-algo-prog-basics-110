@@ -221,7 +221,7 @@ end
 # swing from side to side increasing the amplitude while not reach the stop_cond*
 # return last side and amplitude in that side
 function move_swing!(stop_cond::Function, robot, init_side::HorizonSide=West)::Tuple{HorizonSide, Int}
-    amplitude::Int = 0 # not perfect var name
+    amplitude::Int = 0 # not perfect var name (mb 'met_border'?)
     success::Bool = true
     side::HorizonSide = init_side
 
@@ -233,22 +233,27 @@ function move_swing!(stop_cond::Function, robot, init_side::HorizonSide=West)::T
         success = move!(robot, side, amplitude)[1]
     end
 
-    # robot met (a border) but not (a door)
+    # robot met (a border) but didn't find (a door)
     if (!success)
         side = reverse_side(side)
         move!(robot, side, Int(ceil(amplitude/2))-1)
-        amplitude = move!(stop_cond, robot, side)
+        amplitude = move!(robot, side) do
+            stop_cond() || isborder(robot, side)
+        end
     end
 
-    # robot met a border again (in other direction) ==>
+    # robot met a border again (in other direction) ==> get back to init position
     # ==> there is no a door
     if (!stop_cond())
+        side = reverse_side(side)
+        move!(robot, side, amplitude)
         return (reverse_side(init_side), 0) # returned side != init_side
     end
 
-    if (success)
+    # stop_cond has been achieved
+    if (success) # robot met no borders
         return (side, Int(ceil(amplitude/2)))
-    else
+    else # robot met one border
         return (side, amplitude)
     end
 end
@@ -257,7 +262,7 @@ end
 # try to bypass plain border
 # TODO consider returned value from swing!
 function move_bypass_plane!(robot, side::HorizonSide)::Bool
-    gateway_side::HorizonSide, steps_from_gateway::Int = move_swing!(()->!isborder(robot, side), robot, next_side(side))
+    gateway_side, steps_from_gateway = move_swing!(()->!isborder(robot, side), robot, next_side(side))
     move!(robot, side) # move robot to the gateway
     success::Bool = move!(robot, reverse_side(gateway_side), steps_from_gateway)[1]
 
