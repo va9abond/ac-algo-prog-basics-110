@@ -260,11 +260,15 @@ end
 
 
 # try to bypass plain border
-# TODO consider returned value from swing!
 function move_bypass_plane!(robot, side::HorizonSide)::Bool
+    # try to find a gateway
     gateway_side, steps_from_gateway = move_swing!(()->!isborder(robot, side), robot, next_side(side))
-    move!(robot, side) # move robot to the gateway
-    success::Bool = move!(robot, reverse_side(gateway_side), steps_from_gateway)[1]
+    success = steps_from_gateway > 0 || gateway_side == next_side(side)
+
+    if (success)
+        move!(robot, side) # move robot to the gateway
+        move!(robot, reverse_side(gateway_side), steps_from_gateway)[1]
+    end
 
     return success
 end
