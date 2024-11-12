@@ -34,3 +34,16 @@ function main!()
     move_into_corner!(robot, corner)
     move!(robot, reverse_path(path_into_corner))
 end
+
+
+function main!(robot)
+    corner = (Nord, Ost)
+
+    path_into_corner = move_into_corner!(robot, corner)
+
+    parity::Int = mod(sum((p) -> p[2], path_into_corner), 2)
+    mark_all_chess!(robot, corner, 1-parity)
+
+    move_into_corner!(robot, corner)
+    move!(robot, reverse_path(path_into_corner))
+end
