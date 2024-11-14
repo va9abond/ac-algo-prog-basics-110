@@ -1,32 +1,14 @@
-include("../inc/roblib.jl")
+include("../inc/BorderBypassRobot.jl")
 
 
-function find_marker_borders!(robot::Robot)
-    init_side::HorizonSide = Nord
-    flag_marker::Bool = false
+function main!()
+    robot::Robot = Robot("18-find_marker_spiral_borders.sit", animate=true)
+    rbt_bypass = BorderBypassRobot(robot)
 
-    (ismarker(robot)) && (flag_marker = true)
-    putmarker!(robot)
-
-
-    steps_in_direction::Int = 1
-    side::HorizonSide = init_side
-    while (!flag_marker)
-        (side == reverse_side(init_side)) && (steps_in_direction += 1)
-
-        for i in (1:steps_in_direction)
-            move_through_border!(robot, side)
-            (ismarker(robot)) && (flag_marker = true) && (break)
-        end
-
-        side = next_side(side)
-        (side == init_side) && (steps_in_direction += 1)
-    end
-
+    move_spiral!(()->ismarker(rbt_bypass), rbt_bypass, Ost)
 end
 
 
-function main()
-    robot::Robot = Robot("find_marker_borders.sit", animate=true)
-    find_marker_borders!(robot)
+function main!(robot)
+    move_spiral!(()->ismarker(robot), robot, Ost)
 end
