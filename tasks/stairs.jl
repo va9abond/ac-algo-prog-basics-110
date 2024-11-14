@@ -1,29 +1,26 @@
 include("../inc/roblib.jl")
 
 
-function mark_stairs!(robot::Robot)::Bool
+function mark_stairs!(robot::Robot)
     corner = (Nord, Ost)
-    success, path_into_corner = move_into_corner!(robot, side_v=corner[1], side_h=corner[2])
-    (!success) && (println("failed to reach the corner"), return false)
+    path_into_corner = move_into_corner!(robot, corner)
 
-    direction_limit::HorizonSide = reverse_side(corner[1])
-    direction::HorizonSide = reverse_side(corner[2])
+    direction_border::HorizonSide = reverse_side(corner[1])
+    direction_in_row::HorizonSide = reverse_side(corner[2])
 
     # TODO reduce robot moves (do not return robot at the line start)
+    # mb stop_cond for while loop is move!(robot, direction_border) == false
     stair_width::Int = 1
     putmarker!(robot)
-    while (!isborder(robot, direction_limit))
-        move!(robot, direction_limit)
+    while (!isborder(robot, direction_border))
+        move!(robot, direction_border)
 
-        stair_width = mark_direction!(robot, direction, stair_width)[2] + 1
-        move!(isborder, robot, reverse_side(direction))
+        stair_width = mark_direction!(robot, direction_in_row, stair_width)[2] + 1
+        move!(robot, reverse_side(direction_in_row)) do
+            isborder(robot, reverse_side(direction_in_row))
+        end
     end
 
-    success = move_into_corner!(robot, side_v=corner[1], side_h=corner[2])[1]
-    (!success) && (println("failed to reach the corner"), return false)
-
-    success = move!(robot, reverse_path(path_into_corner))[1]
-    (!success) && (println("failed to return to the starting position"), return false)
-
-    return true
+    move_into_corner!(robot, corner)
+    move!(robot, reverse_path(path_into_corner))
 end
