@@ -274,17 +274,17 @@ function move_bypass_plane!(robot, side::HorizonSide)::Bool
 end
 
 
-function move_bypass_plane!(robot, side::HorizonSide, steps::Int)::Bool
+function move_bypass_plane!(robot, side::HorizonSide, steps::Int)::Tuple{Bool, Int}
     traversed_steps::Int = 0
 
     while (traversed_steps < steps)
         success::Bool = move_bypass_plane!(robot, side)
-        !success && return false
+        !success && return (false, traversed_steps)
 
         traversed_steps += 1
     end
 
-    return true
+    return (true, steps)
 end
 
 
