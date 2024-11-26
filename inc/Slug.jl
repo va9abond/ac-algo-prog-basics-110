@@ -2,7 +2,7 @@ include("roblib.jl")
 
 
 mutable struct Slug
-    _robot::Robot
+    _robot
     _path::Vector{Tuple{HorizonSide, Int}}
 end
 
@@ -20,9 +20,11 @@ function HorizonSideRobots.putmarker!(robot::Slug)
 end
 
 
-function HorizonSideRobots.move!(robot::Slug, side::HorizonSide)
-    move!(robot._robot, side)
-    push!(robot._path, (side, 1))
+function HorizonSideRobots.move!(robot::Slug, side::HorizonSide)::Bool
+    success = move!(robot._robot, side)
+    success && push!(robot._path, (side, 1))
+
+    return success
 end
 
 
@@ -30,26 +32,13 @@ function HorizonSideRobots.move!(robot::Slug, side::HorizonSide, steps::Int)::Tu
     traversed_steps::Int = 0
 
     while (traversed_steps < steps)
-        (isborder(robot, side)) && (return (false, traversed_steps))
-        move!(robot, side)
+        success = move!(robot, side)
+        (!success) && (return (false, traversed_steps))
+
         traversed_steps += 1
     end
 
     return (true, steps)
-end
-
-
-function HorizonSideRobots.move!(robot::Slug, path::Vector{Tuple{HorizonSide, Int}})
-    traversed_path::Vector{Tuple{HorizonSide, Int}} = []
-
-    for (side, steps) in path
-        success, steps_traversed = move!(robot, side, steps)
-        push!(traversed_path, (side, steps_traversed))
-
-        (!success) && (return (false, traversed_path))
-    end
-
-    return (true, traversed_path)
 end
 
 
