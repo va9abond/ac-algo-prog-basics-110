@@ -2,21 +2,22 @@ include("../inc/roblib.jl")
 
 
 function moverec!(stop_cond::Function, robot, side::HorizonSide)::Int
-    steps_untill_stop_cond::Int = 0
-
     if (!stop_cond())
-        return move!(robot, side) do
-            stop_cond()
-        end
-        steps_untill_stop_cond += 1
-    end
+        move!(robot, side)
 
-    return steps_untill_stop_cond
+        return moverec!(robot, side) do
+            stop_cond()
+        end + 1
+    else
+        return 0
+    end
 end
 
 
 function main!(robot, side)
-    moverec!(robot, side) do
+    steps = moverec!(robot, side) do
         isborder(robot, side)
     end
+
+    return steps
 end
