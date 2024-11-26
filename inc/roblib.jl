@@ -37,6 +37,12 @@ function iscollinear(side1::HorizonSide, side2::HorizonSide)
 end
 
 
+function trymove!(robot, side::HorizonSide)::Bool
+    isborder(robot, side) && return false
+    move!(robot, side) & return true
+end
+
+
 function HorizonSideRobots.move!(robot, side::HorizonSide, steps::T)::Tuple{Bool, Integer} where T <: Integer
     traversed_steps::T = 0
 
