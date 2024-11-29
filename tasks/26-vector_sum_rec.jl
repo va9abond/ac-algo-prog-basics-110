@@ -1,11 +1,7 @@
 using Random
 using BenchmarkTools
 
-# return sum of all vector entries and current_sum
-# function sumrec(vector::Vector{value_type}, current_sum = value_type(0))::value_type where value_type
-# TODO init sum with default constructor of value_type
-# sum::value_type = missing
-# sum::value_type = value_type(0)
+
 function sumrec(vector::Vector{Int})::Int
     (length(vector) == 1) && return vector[1]
     return vector[1] + sumrec(vector[2:end])
