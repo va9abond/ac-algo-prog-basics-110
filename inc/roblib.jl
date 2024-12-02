@@ -207,10 +207,9 @@ function mark_direction!(robot, side1::HorizonSide, side2::HorizonSide)::Vector{
 end
 
 
-# [WARNING]: test is needed
-# function mark_chess_direction!(robot, side::HorizonSide, ::Val{0})::Int8
-# function mark_chess_direction!(robot, side::HorizonSide, ::Val{1})::Int8
-function mark_chess_direction!(robot, side::HorizonSide, parity::Int)::Int
+# function mark_direction_chess!(robot, side::HorizonSide, ::Val{0})::Nothing
+# function mark_chess_direction!(robot, side::HorizonSide, ::Val{1})::Nothing
+function mark_direction_chess!(robot, side::HorizonSide, parity::Int)::Int
     parity = mod(parity, 2) # expensive? parity is 1 or 0 now
 
     while (!isborder(robot, side))
