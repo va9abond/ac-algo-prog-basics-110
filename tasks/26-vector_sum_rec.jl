@@ -4,7 +4,7 @@ using BenchmarkTools
 
 function sumrec_x(vector::Vector{value_type})::value_type where value_type
     len = length(vector)
-    (len == 1) && return vector[1]
+    (len == 1) && return vector[begin]
 
     pivot = div(len, 2)
     return sumrec_x(vector[begin:pivot]) + sumrec_x(vector[pivot+1:end])
