@@ -1,4 +1,4 @@
-include("../inc/roblib.jl")
+include("../inc/roblib.jl") # lecture 5
 
 
 function count_borders_in_line!(robot, side_move::HorizonSide, side_border::HorizonSide; gap_max::Int = 0)::Int
