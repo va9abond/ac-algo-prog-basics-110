@@ -19,4 +19,3 @@ function main!()
     robot = Robot("maze_markers_no_escape.sit", animate=true)
     maze_traversing!(robot)
 end
-
