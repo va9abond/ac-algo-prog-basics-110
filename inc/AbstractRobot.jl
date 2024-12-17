@@ -1,4 +1,5 @@
 import HorizonSideRobots as HSR
+import HorizonSideRobots: move!, putmarker!, isborder, ismarker, temperature
 
 abstract type AbstractRobot end
 
