@@ -86,7 +86,7 @@ link:tasks/6b-mark_in_front_of_start_pos.jl[6b-mark_in_front_of_start_pos]
 маркеры в шахматном порядке, причем так, чтобы в клетке с роботом
 находился маркер
 
-. UNDONE
+. link:tasks/10-mark_all_chess_n.jl[10-mark_all_chess_n]
 +
 ДАНО:: Робот - в произвольной клетке ограниченного прямоугольного поля
 (без внутренних перегородок)

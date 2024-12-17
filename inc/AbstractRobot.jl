@@ -1,10 +1,11 @@
-import HorizonSideRobots as hsr
-
+import HorizonSideRobots as HSR
 
 abstract type AbstractRobot end
 
-move!(robot::AbstractRobot, side::HorizonSide) = hsr.move!(getparent(robot), side)
-isborder(robot::AbstractRobot, side::HorizonSide) = hsr.isborder(getparent(robot, side))
-putmarker!(robot::AbstractRobot) = hsr.putmarker!(getparent(robot, side))
-ismarker(robot::AbstractRobot) = hsr.ismarker(getparent(robot))
-temperature(robot::AbstractRobot) = hsr.temperature(getparent(robot))
+move!(robot::AbstractRobot, side)    = HSR.move!(getbaserobot(robot), side)
+putmarker!(robot::AbstractRobot)     = HSR.putmarker!(getbaserobot(robot, side))
+isborder(robot::AbstractRobot, side) = HSR.isborder(getbaserobot(robot, side))
+ismarker(robot::AbstractRobot)       = HSR.ismarker(getbaserobot(robot))
+temperature(robot::AbstractRobot)    = HSR.temperature(getbaserobot(robot))
+
+getbaserobot(robot::HSR.Robot) = robot
