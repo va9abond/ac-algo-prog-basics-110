@@ -16,6 +16,12 @@ function next_side(side::HorizonSide)::HorizonSide
     return HorizonSide((Int(side)+1)%4)
 end
 
+# prev side by clockwise direction
+# ... -> Nord -> Ost -> Sud -> West -> Nord -> ...
+function prev_side(side::HorizonSide)::HorizonSide
+    return HorizonSide((Int(side)+3)%4)
+end
+
 
 function reverse_corner(corner::NTuple{2, HorizonSide})
     return (reverse_side(corner[1]), reverse_side(corner[2]))
