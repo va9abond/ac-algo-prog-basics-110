@@ -43,6 +43,7 @@ function iscollinear(side1::HorizonSide, side2::HorizonSide)
 end
 
 
+# TODO just for robot::Robot
 function trymove!(robot, side::HorizonSide)::Bool
     isborder(robot, side) && return false
     move!(robot, side) & return true
@@ -383,6 +384,31 @@ function move_snake2!(
         while ( !(success = stop_cond()) )
             !move!(robot, side_move_in_line) && break
         end
+    end
+
+    return success
+end
+
+
+function move_spiral2!(
+        stop_cond::Function,
+        robot,
+        start_side::HorizonSide=West
+    )::Bool
+
+    success::Bool = stop_cond()
+    side::HorizonSide = start_side
+    steps::Int = 1
+
+    while (!success)
+
+        for _ in (1:steps)
+            !move!(robot, side) && return success # success is always false here
+            (success = stop_cond()) && break
+        end
+
+        side = next_side(side)
+        iscollinear(side, start_side) && (steps += 1)
     end
 
     return success
