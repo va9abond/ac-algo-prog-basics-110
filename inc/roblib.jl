@@ -335,3 +335,55 @@ function move_snake!(stop_cond::Function, robot;
 
     return success
 end
+
+
+# TODO specialize for robot::Robot
+#      move!(robot::Robot, side) -> nothing (not ::Bool)
+# TODO move_snake2! without stop_cond
+function move_snake2!(
+        stop_cond::Function, robot,
+        side_promotion::HorizonSide,
+        side_start_move_in_line::HorizonSide=next_side(side_promotion)
+    )::Bool
+
+    # success::Bool = false
+    # side_move_in_line = side_start_move_in_line
+    #
+    # # INVARIANT success is always stop_cond() in current position
+    # while ( !(success = stop_cond()) )
+    #     !move!(robot, side_move_in_line) && break
+    # end
+    #
+    # # INVARIANT success is always stop_cond() in current position
+    # while ( move!(robot, side_promotion) && !(success = stop_cond()))
+    #     side_move_in_line = reverse_side(side_move_in_line)
+    #
+    #     while ( !(success = stop_cond()) )
+    #         !move!(robot, side_move_in_line) && break
+    #     end
+    # end
+    #
+    # return success
+
+
+    success::Bool = stop_cond()
+    side_move_in_line = side_start_move_in_line
+
+    # cover the first line before main loop (if THE FIELD has width=1)
+    while ( !success )
+        !move!(robot, side_move_in_line) && break
+        success = stop_cond()
+    end
+
+    # go to the next line
+    while ( !success && move!(robot, side_promotion) )
+        side_move_in_line = reverse_side(side_move_in_line)
+
+        # in line movement
+        while ( !(success = stop_cond()) )
+            !move!(robot, side_move_in_line) && break
+        end
+    end
+
+    return success
+end
