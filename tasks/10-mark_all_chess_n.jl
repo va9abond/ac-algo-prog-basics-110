@@ -5,7 +5,7 @@ include("../inc/roblib.jl")
 
 
 
-function main!(square_size::Int = 2)
+function start(square_size::Int = 2)
     grobot::GRobot = GRobot("random_pos_no_borders.sit")
     # grobot::GRobot = GRobot(Robot(15,15, animate=true))
     corner = (Sud, West)

@@ -5,7 +5,7 @@ include("../inc/latest/MarkCondRobot.jl")
 include("../inc/roblib.jl")
 
 
-function main!()
+function start()
     grobot::GRobot = GRobot("random_pos_plain_borders.sit")
 
     corner = (Sud, West)
