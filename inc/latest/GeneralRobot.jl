@@ -3,6 +3,7 @@ include("AbstractRobot.jl")
 include("../roblib.jl")
 
 
+
 mutable struct GRobot <: AbstractRobot
     _robot::Robot
 end
