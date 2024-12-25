@@ -76,6 +76,9 @@ function HorizonSideRobots.move!(stop_cond::Function, robot, side::HorizonSide):
 end
 
 
+# NOTE from the practice usage storing tuple (side + steps) is needless,
+# almost always steps are equals 1, we should store just sequence of
+# sides as the robot path
 function HorizonSideRobots.move!(robot, path::Vector{HorizonSide})::Tuple{Bool, Vector{HorizonSide}}
     traversed_path::Vector{HorizonSide} = []
 
