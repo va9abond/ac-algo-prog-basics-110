@@ -19,6 +19,8 @@ end
 Coords() = Coords{Int}(0,0)
 Coords(other_coords::NTuple{2, value_type}) where value_type = Coords{value_type}(other_coords[1], other_coords[2])
 
+# import Base: convert
+# convert(::NTuple{2, value_type}, coords::Coords{value_type}) where value_type = NTuple{2,value_type}(coords.x, coords.y)
 
 
 mutable struct CoordsRobot{robot_type} # <: AbstractRobot
@@ -45,6 +47,4 @@ HorizonSideRobots.putmarker!(robot::CoordsRobot) = putmarker!(robot._robot)
 HorizonSideRobots.isborder(robot::CoordsRobot, side::HorizonSide) = isborder(robot._robot, side)
 HorizonSideRobots.ismarker(robot::CoordsRobot) = ismarker(robot._robot)
 getcoords(robot::CoordsRobot)::Coords{Int} = robot._coords
-
-import Base: convert
-convert(::NTuple{2, value_type}, coords::Coords{value_type}) where value_type = (coords.x, coords.y)
+getcoords_unpacked(robot::CoordsRobot)::NTuple{2, Int} = (robot._coords.x, robot._coords.y)

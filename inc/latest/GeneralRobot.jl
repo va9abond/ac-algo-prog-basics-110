@@ -9,6 +9,7 @@ mutable struct GRobot <: AbstractRobot
 end
 getbaserobot(robot::GRobot) = robot._robot
 
+# TODO ctor with field sizes
 GRobot(isanimated::Bool=true) = GRobot(Robot(animate=isanimated))
 GRobot(sit::String, isanimated::Bool=true) = GRobot(Robot(sit, animate=isanimated))
 
